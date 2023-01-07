@@ -47,9 +47,9 @@ class EmployeeResource extends Resource
                 Forms\Components\FileUpload::make('image')
                     ->label('الصورة')
                     ->image()
-                    ->imageCropAspectRatio('16:9')
-                    ->imageResizeTargetWidth('920')
-                    ->imageResizeTargetHeight('90')
+                    //->imageCropAspectRatio('16:9')
+                    ->imageResizeTargetWidth('220')
+                    ->imageResizeTargetHeight('220')
                     ->directory('employees'),
                 Forms\Components\Select::make('status')
                     ->label('الحالة')
