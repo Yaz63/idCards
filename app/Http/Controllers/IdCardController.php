@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManagerStatic as Image;
-
+use TCPDI;
 
 class IdCardController extends BaseController
 {
-    public   function print_id($id)
+    public   function print_idold($id)
     {
         $emp = Employee::where('id', '=', $id)->with('job')->get()->first();
         $data=['emp' => $emp];
@@ -57,5 +57,72 @@ class IdCardController extends BaseController
         return view('notify', $data);
 
         }
+    }
+    public function print_id($id){
+   
+        $emp = Employee::where('id', '=', $id)->with('job')->get()->first();
+            $pdf =  new TCPDI();
+            $pdf->SetAutoPageBreak(FALSE, PDF_MARGIN_BOTTOM);
+            $inputPath = "test.pdf";
+            $outputName =  "card1.pdf";
+            $outputPath = $outputName;
+            $pdf->numPages = $pdf->setSourceFile($inputPath);
+         
+            $lg['a_meta_charset'] = 'UTF-8';
+           // $lg['a_meta_dir'] = 'rtl';
+            $lg['a_meta_language'] = 'fa';
+            $lg['w_page'] = 'page';
+            
+            // set some language-dependent strings (optional)
+            $pdf->setLanguageArray($lg);
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            foreach (range(1, $pdf->numPages, 1) as $page) {
+                ///echo    json_encode(["p"=>   $page]);
+                $rotate = false;
+                $degree = 0;
+                try {
+                    $pdf->_tplIdx = $pdf->importPage($page);
+                } catch (\Exception $e) {
+                    return false;
+                }
+          
+                $size = $pdf->getTemplateSize($pdf->_tplIdx);
+              //  $scale = round($size['w'] / $docWidth, 3);
+                $pdf->AddPage(self::orientation($size['w'], $size['h']), array($size['w'], $size['h'], 'Rotate' => $degree), true);
+                $pdf->useTemplate($pdf->_tplIdx);
+              
+                     
+                            $editted = true;
+                            $imageArray = 
+                            $img = 'storage/'.$emp->image;
+                           // dd('storage/'.$emp->image);
+                            $pdf->Image($img, 40, 43, 20, 20, '', '', '', false);
+                            $editted = true;
+                            $pdf->SetFont('helvetica', '', 6.5);
+                            $pdf->SetFont('aefurat', '', 6.5);
+
+                           
+                            $pdf->writeHTMLCell(200,2.5, 42, 66,ltrim($emp->name), 0, true, '', false);
+                            $pdf->writeHTMLCell(200,2.5, 42, 71.3,ltrim($emp->job->title), 0, true, '', false);
+                }
+            
+            $f = $pdf->Output( $outputPath, 'I');
+
+            
+       
+        return true;
+    
+    }
+    public  function orientation($width, $height)
+    {
+        if ($width > $height) {
+            return "L";
+        } else {
+            return "P";
+        }
+    }
+    public  function scale($dimension, $scale)
+    {
+        return round($dimension * $scale);
     }
 }
