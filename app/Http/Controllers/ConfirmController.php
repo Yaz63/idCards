@@ -30,7 +30,7 @@ class ConfirmController extends BaseController
       'doc' => 'required',
       'confirm' => 'required',
     ]);
-    $emp->image = $request->file('image')->store('public/employees');
+    $emp->image = $request->file('image')->store('employees');
     $emp->status = $request->confirm;
     //  $emp->status = 0;
     $emp->save();
@@ -41,7 +41,7 @@ class ConfirmController extends BaseController
 
     Attachment::create([
       "orginal_name" => $_FILES['doc']['name'],
-      'name' => $request->file('doc')->store('public/employees'),
+      'name' => $request->file('doc')->store('employees'),
       "user_id" => $emp->id,
       "type_id" => $request->type_id,
     ]);
