@@ -82,11 +82,16 @@ class EmployeeResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('print')
+                ->url(fn (Employee $record): string => route('print_id', $record))
+                ->openUrlInNewTab()
+                ->label('')
+                ->tooltip('طباعة')
+                ->icon('heroicon-o-printer')
+                ->color('secondary'),
                 Tables\Actions\EditAction::make()->label('')->tooltip('تعديل'),
                 Tables\Actions\DeleteAction::make()->label('')->tooltip('حذف'),
-              Action::make('print')
-                ->url(fn (Employee $record): string => route('print_id', $record))
-                ->openUrlInNewTab()->label('طباعه')->tooltip('طباعة')]);
+            ]);
     }
 
     public static function getPages(): array
