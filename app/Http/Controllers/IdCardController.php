@@ -24,7 +24,7 @@ class IdCardController extends BaseController
     public   function notify()
     {
         $data['employees'] = Employee::where("status", "=", 0)->get();
-        
+
         return view('notify', $data);
     }
     public function send_noify(Request $request)
@@ -59,7 +59,7 @@ class IdCardController extends BaseController
         }
     }
     public function print_id($id){
-   
+
         $emp = Employee::where('id', '=', $id)->with('job')->get()->first();
             $pdf =  new TCPDI();
             $pdf->SetAutoPageBreak(FALSE, PDF_MARGIN_BOTTOM);
@@ -67,12 +67,12 @@ class IdCardController extends BaseController
             $outputName =  "card1.pdf";
             $outputPath = $outputName;
             $pdf->numPages = $pdf->setSourceFile($inputPath);
-         
+
             $lg['a_meta_charset'] = 'UTF-8';
            // $lg['a_meta_dir'] = 'rtl';
             $lg['a_meta_language'] = 'fa';
             $lg['w_page'] = 'page';
-            
+
             // set some language-dependent strings (optional)
             $pdf->setLanguageArray($lg);
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,15 +85,15 @@ class IdCardController extends BaseController
                 } catch (\Exception $e) {
                     return false;
                 }
-          
+
                 $size = $pdf->getTemplateSize($pdf->_tplIdx);
               //  $scale = round($size['w'] / $docWidth, 3);
                 $pdf->AddPage(self::orientation($size['w'], $size['h']), array($size['w'], $size['h'], 'Rotate' => $degree), true);
                 $pdf->useTemplate($pdf->_tplIdx);
-              
-                     
+
+
                             $editted = true;
-                            $imageArray = 
+                            $imageArray =
                             $img = 'storage/'.$emp->image;
                            // dd('storage/'.$emp->image);
                             $pdf->Image($img, 40, 43, 20, 20, '', '', '', false);
@@ -101,17 +101,17 @@ class IdCardController extends BaseController
                             $pdf->SetFont('helvetica', '', 6.5);
                             $pdf->SetFont('aefurat', '', 6.5);
 
-                           
+
                             $pdf->writeHTMLCell(200,2.5, 42, 66,ltrim($emp->name), 0, true, '', false);
                             $pdf->writeHTMLCell(200,2.5, 42, 71.3,ltrim($emp->job->title), 0, true, '', false);
                 }
-            
+
             $f = $pdf->Output( $outputPath, 'I');
 
-            
-       
+
+
         return true;
-    
+
     }
     public  function orientation($width, $height)
     {

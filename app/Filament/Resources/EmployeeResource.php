@@ -6,6 +6,7 @@ use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
 use App\Models\Employee;
 use App\Models\Job;
+use App\Models\Location;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -20,7 +21,6 @@ class EmployeeResource extends Resource
     protected static ?string $model = Employee::class;
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    // protected static ?string $navigationGroup = 'الاعدادات';
     protected static ?string $pluralModelLabel = 'الموظفين';
     protected static ?string $modelLabel = 'الموظف';
 
@@ -33,17 +33,30 @@ class EmployeeResource extends Resource
                     ->required()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('phone')
-                    ->label('الرقم')
+                    ->label('رقم الهاتف')
                     ->tel()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('email')
                     ->label('الايميل')
                     ->email()
                     ->maxLength(191),
+                    Forms\Components\Select::make('job_id')
+                        ->label('الموقع')
+                        ->required()
+                        ->options(Location::all()->pluck('name', 'id'))
+                        ->searchable(),
                 Forms\Components\textInput::make('job_no')
                     ->label('رقم الوظيفة')
-                    ->label('Job No')
                     ->numeric(),
+                Forms\Components\Select::make('status')
+                    ->label('الحالة')
+                    ->options([0 => 'غير مؤكد', 1 => 'مؤكد'])
+                    ->default(0),
+                Forms\Components\Select::make('job_id')
+                    ->label('عنوان الوظيفة')
+                    ->required()
+                    ->options(Job::all()->pluck('title', 'id'))
+                    ->searchable(),
                 Forms\Components\FileUpload::make('image')
                     ->label('الصورة')
                     ->image()
@@ -51,15 +64,6 @@ class EmployeeResource extends Resource
                     ->imageResizeTargetWidth('220')
                     ->imageResizeTargetHeight('220')
                     ->directory('employees'),
-                Forms\Components\Select::make('status')
-                    ->label('الحالة')
-                    ->options([0 => 'Unconfirmed', 1 => 'Confirmed'])
-                    ->default(0),
-                Forms\Components\Select::make('job_id')
-                    ->label('عنوان الوظيفة')
-                    ->required()
-                    ->options(Job::all()->pluck('title', 'id'))
-                    ->searchable(),
             ]);
     }
 
