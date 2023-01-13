@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 });
 Route::get('/admin', function () {
-    return redirect('/admin/login');
+    return redirect('/admin/employees');
 });
 Route::get('/confirm_info/{id}', [ConfirmController::class,'index'])->name('confrim_info_link');
 Route::post('/save', [ConfirmController::class,'save'])->name('confrim_info');
