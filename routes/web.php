@@ -16,9 +16,11 @@ use App\Http\Controllers\IdCardController;
 */
 
 Route::get('/', function () {
-    return redirect('/admin');
-    //  route('admin');
-    // return view('welcome');
+    return redirect('/admin/login');
+
+});
+Route::get('/admin', function () {
+    return redirect('/admin/login');
 });
 Route::get('/confirm_info/{id}', [ConfirmController::class,'index'])->name('confrim_info_link');
 Route::post('/save', [ConfirmController::class,'save'])->name('confrim_info');
