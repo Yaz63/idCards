@@ -106,7 +106,7 @@ class IdCardController extends BaseController
                             $editted = true;
                             $imageArray =
                             $img = 'storage/'.$emp->image;
-                            $logo = 'storage/'.$emp->location->logo;
+                            $logo = 'storage/'.$emp->location->logo??'';
                            // dd('storage/'.$emp->image);
                             $pdf->Image($logo, 48, 12, 40, 8, '', '', '', false);
                             $pdf->Image($img, 40, 43, 20, 20, '', '', '', false);
