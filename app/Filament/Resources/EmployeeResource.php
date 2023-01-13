@@ -71,14 +71,14 @@ class EmployeeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('الاسم'),
-                Tables\Columns\TextColumn::make('phone')->label('رقم الهاتف'),
-                Tables\Columns\TextColumn::make('email')->label('الايميل'),
-                Tables\Columns\TextColumn::make('job.title')->label('المسمى الوظيفي'),
-                Tables\Columns\TextColumn::make('location.name')->label(' الموقع'),
-                Tables\Columns\TextColumn::make('job_no')->label('رقم الوظيفة'),
-                Tables\Columns\ImageColumn::make('image')->size(60)->label('الصورة'),
-                Tables\Columns\IconColumn::make('stauts')
+                Tables\Columns\TextColumn::make('name')->label('الاسم')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('phone')->label('رقم الهاتف')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('email')->label('الايميل')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('job.title')->label('المسمى الوظيفي')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('location.name')->label(' الموقع')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('job_no')->label('رقم الوظيفة')->searchable()->sortable(),
+                Tables\Columns\ImageColumn::make('image')->size(60)->label('الصورة')->searchable()->sortable(),
+                Tables\Columns\IconColumn::make('status')->searchable()->sortable()
                     ->boolean()->label('الحالة')
                     ->getStateUsing(fn ($record) => $record->status == 1 ? true : false)
                     ,
