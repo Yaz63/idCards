@@ -41,8 +41,9 @@ class IdTypeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->label('تعديل'),
-                Tables\Actions\DeleteAction::make()->label('حذف'),
+             
+                Tables\Actions\EditAction::make()->label('')->tooltip('تعديل'),
+                Tables\Actions\DeleteAction::make()->label('')->tooltip('حذف'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

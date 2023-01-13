@@ -6,7 +6,9 @@ use App\Models\Attachment;
 use App\Models\Employee;
 use App\Models\IdType;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Response as FacadesResponse;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManagerStatic as Image;
 use TCPDI;
@@ -15,6 +17,8 @@ class IdCardController extends BaseController
 {
     public   function print_idold($id)
     {
+        echo encrypt_id($id);
+        exit;
         $emp = Employee::where('id', '=', $id)->with('job')->get()->first();
         $data=['emp' => $emp];
         $data['doc'] = Attachment::where("user_id", "=", $id)->get()->last();
@@ -58,13 +62,21 @@ class IdCardController extends BaseController
 
         }
     }
+    public function get_doc($id){
+
+        //$emp = Employee::where('id', '=', $id)->with(['job','location'])->get()->first();
+        $file=Attachment::where('user_id',"=",$id)->get()->last();
+
+        return FacadesResponse::download(storage_path('app/public/'.$file->name));
+
+    }
     public function print_id($id){
 
-        $emp = Employee::where('id', '=', $id)->with('job')->get()->first();
+        $emp = Employee::where('id', '=', $id)->with(['job','location'])->get()->first();
             $pdf =  new TCPDI();
             $pdf->SetAutoPageBreak(FALSE, PDF_MARGIN_BOTTOM);
-            $inputPath = "test.pdf";
-            $outputName =  "card1.pdf";
+            $inputPath = "files/card.pdf";
+            $outputName =  "card_{$emp->job_no}.pdf";
             $outputPath = $outputName;
             $pdf->numPages = $pdf->setSourceFile($inputPath);
 
@@ -95,14 +107,17 @@ class IdCardController extends BaseController
                             $editted = true;
                             $imageArray =
                             $img = 'storage/'.$emp->image;
+                            $logo = 'storage/'.$emp->location->logo;
                            // dd('storage/'.$emp->image);
+                            $pdf->Image($logo, 48, 12, 40, 8, '', '', '', false);
                             $pdf->Image($img, 40, 43, 20, 20, '', '', '', false);
                             $editted = true;
                             $pdf->SetFont('helvetica', '', 6.5);
-                            $pdf->SetFont('aefurat', '', 6.5);
+                            $pdf->SetFont('aefurat', '', 6.8    );
 
 
                             $pdf->writeHTMLCell(200,2.5, 42, 66,ltrim($emp->name), 0, true, '', false);
+                            $pdf->writeHTMLCell(200,2.5, 42, 68.5,ltrim($emp->location->name), 0, true, '', false);
                             $pdf->writeHTMLCell(200,2.5, 42, 71.3,ltrim($emp->job->title), 0, true, '', false);
                 }
 

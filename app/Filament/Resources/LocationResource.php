@@ -34,8 +34,8 @@ class LocationResource extends Resource
                 ->label('الشعار')
                 ->image()
                 //->imageCropAspectRatio('16:9')
-                ->imageResizeTargetWidth('220')
-                ->imageResizeTargetHeight('220')
+                ->imageResizeTargetWidth('50')
+                ->imageResizeTargetHeight('20')
                 ->directory('locations'),
         ]);
     }
@@ -45,14 +45,14 @@ class LocationResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('الاسم'),
-                Tables\Columns\ImageColumn::make('logo')->size(60)->label('الصورة'),
+                Tables\Columns\ImageColumn::make('logo')->label('الصورة'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->label('')->tooltip('تعديل'),
+                Tables\Actions\DeleteAction::make()->label('')->tooltip('حذف'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

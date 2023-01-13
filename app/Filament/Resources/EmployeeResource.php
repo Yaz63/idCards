@@ -40,7 +40,7 @@ class EmployeeResource extends Resource
                     ->label('الايميل')
                     ->email()
                     ->maxLength(191),
-                    Forms\Components\Select::make('job_id')
+                    Forms\Components\Select::make('location_id')
                         ->label('الموقع')
                         ->required()
                         ->options(Location::all()->pluck('name', 'id'))
@@ -75,6 +75,7 @@ class EmployeeResource extends Resource
                 Tables\Columns\TextColumn::make('phone')->label('رقم الهاتف'),
                 Tables\Columns\TextColumn::make('email')->label('الايميل'),
                 Tables\Columns\TextColumn::make('job.title')->label('المسمى الوظيفي'),
+                Tables\Columns\TextColumn::make('location.name')->label(' الموقع'),
                 Tables\Columns\TextColumn::make('job_no')->label('رقم الوظيفة'),
                 Tables\Columns\ImageColumn::make('image')->size(60)->label('الصورة'),
                 Tables\Columns\IconColumn::make('stauts')
@@ -88,13 +89,18 @@ class EmployeeResource extends Resource
             ->actions([
                 Tables\Actions\Action::make('print')
                 ->url(fn (Employee $record): string => route('print_id', $record))
-                ->openUrlInNewTab()
                 ->label('')
                 ->tooltip('طباعة')
                 ->icon('heroicon-o-printer')
                 ->color('secondary'),
                 Tables\Actions\EditAction::make()->label('')->tooltip('تعديل'),
                 Tables\Actions\DeleteAction::make()->label('')->tooltip('حذف'),
+                Tables\Actions\Action::make('download')
+                ->url(fn (Employee $record): string => route('get_doc', $record))
+                ->label('')
+                ->tooltip('تحميل وثيقة الهوية')
+                ->icon('heroicon-o-download')
+                ->color('secondary'),
             ]);
     }
 

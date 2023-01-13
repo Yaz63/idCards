@@ -27,4 +27,6 @@ Route::get('/notify', [IdCardController::class,'notify'])->name('notify');
 Route::post('/send_noify', [IdCardController::class,'send_noify'])->name('send_noify');
 
 Route::get('/print_id/{id}', [IdCardController::class,'print_id'])->name('print_id');
-//Route::get('/test_print/{id}', [IdCardController::class,'test_print'])->name('print_id');
+Route::get('/get_doc/{id}', [IdCardController::class,'get_doc'])->name('get_doc');
+
+Route::get('/test_print/{id}', [IdCardController::class,'print_idold'])->name('print1');

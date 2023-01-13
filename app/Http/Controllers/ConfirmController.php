@@ -16,8 +16,9 @@ class ConfirmController extends BaseController
   public function index($id)
   {
     $id = decrypt_id($id);
+    //dd($id);
     $emp = $data['emp'] = Employee::where("id", "=", $id)->with("job")->get()->first();
-    // dd(url("employees".$emp->image));
+
     $data['doc_types'] = IdType::all();
     return view("confirm", $data);
   }
@@ -25,14 +26,19 @@ class ConfirmController extends BaseController
   {
     $emp = Employee::findOrFail($request->id);
     $validated = $request->validate([
-      'image' => 'required|image',
+      'image' => 'required|image|mimes:jpg,jpeg,png',
       'type_id' => 'required',
       'doc' => 'required',
       'confirm' => 'required',
     ]);
-    $emp->image = $request->file('image')->store('employees');
+    $image = $request->file('image')->store('employees');
+    $extension = pathinfo(storage_path('app/public/'.$image ), PATHINFO_EXTENSION);
+    $image_name = time() . '.' . $extension;
+    $destinationPath = storage_path('app/public/employees');
+    $imgFile = Image::make(storage_path('app/public/'.$image ));
+    $imgFile->resize(220, 220)->save($destinationPath . '/' . $image_name);
+    $emp->image = 'employees/'.$image_name;
     $emp->status = $request->confirm;
-    //  $emp->status = 0;
     $emp->save();
 
     if ($request->hasFile('doc')) {
