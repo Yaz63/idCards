@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('attachments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('orginal_name');
             $table->timestamps();
             $table->unsignedBigInteger('type_id');
             $table->unsignedBigInteger('user_id');
