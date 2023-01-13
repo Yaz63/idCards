@@ -116,8 +116,8 @@ class IdCardController extends BaseController
 
 
                             $pdf->writeHTMLCell(200,2.5, 42, 66,ltrim($emp->name), 0, true, '', false);
-                            $pdf->writeHTMLCell(200,2.5, 42, 68.3,ltrim($emp->location->name), 0, true, '', false);
-                            $pdf->writeHTMLCell(200,2.5, 42, 71.3,ltrim($emp->job->title), 0, true, '', false);
+                            $pdf->writeHTMLCell(200,2.5, 42, 68.3,ltrim(($emp->location->name)??''), 0, true, '', false);
+                            $pdf->writeHTMLCell(200,2.5, 42, 71.3,ltrim(($emp->job->title??'')), 0, true, '', false);
                 }
 
             $f = $pdf->Output( $outputPath, 'I');
