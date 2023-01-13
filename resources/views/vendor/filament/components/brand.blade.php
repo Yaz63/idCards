@@ -1,8 +1,4 @@
-@if (filled($brand = config('filament.brand')))
-    <div @class([
-        'filament-brand text-xl font-bold tracking-tight',
-        'dark:text-white' => config('filament.dark_mode'),
-    ])>
-        {{ $brand }}
-    </div>
-@endif
+@php
+$logo = "storage/".\App\Models\Location::where('id', 1)->first()->logo ?? 'img/logo.jfif';
+@endphp
+<img src="{{ asset($logo)}}" alt="Logo" class="h-10">
