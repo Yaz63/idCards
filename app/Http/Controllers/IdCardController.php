@@ -6,9 +6,8 @@ use App\Models\Attachment;
 use App\Models\Employee;
 use App\Models\IdType;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Response as FacadesResponse;
+use Illuminate\Support\Facades\Response as Response;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManagerStatic as Image;
 use TCPDI;
@@ -67,7 +66,7 @@ class IdCardController extends BaseController
         //$emp = Employee::where('id', '=', $id)->with(['job','location'])->get()->first();
         $file=Attachment::where('user_id',"=",$id)->get()->last();
 
-        return FacadesResponse::download(storage_path('app/public/'.$file->name));
+        return Response::download(storage_path('app/public/'.$file->name));
 
     }
     public function print_id($id){
@@ -117,7 +116,7 @@ class IdCardController extends BaseController
 
 
                             $pdf->writeHTMLCell(200,2.5, 42, 66,ltrim($emp->name), 0, true, '', false);
-                            $pdf->writeHTMLCell(200,2.5, 42, 68.5,ltrim($emp->location->name), 0, true, '', false);
+                            $pdf->writeHTMLCell(200,2.5, 42, 68.3,ltrim($emp->location->name), 0, true, '', false);
                             $pdf->writeHTMLCell(200,2.5, 42, 71.3,ltrim($emp->job->title), 0, true, '', false);
                 }
 
